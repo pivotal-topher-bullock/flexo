@@ -14,7 +14,7 @@ func NewHtmlLexer(tokenizer *html.Tokenizer) flexo.Lexer {
 }
 
 type htmlLexer struct {
-	tokgienizer *html.Tokenizer
+	tokenizer *html.Tokenizer
 }
 
 func (h *htmlLexer) Run(tokens chan<- flexo.Token) {
