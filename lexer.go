@@ -4,10 +4,6 @@ type Lexer interface {
 	Run(tokens chan<- Token)
 }
 
-type Config struct {
-	LinkPrefix string
-}
-
 type TokenType int
 
 const (
@@ -19,7 +15,6 @@ const (
 	ListEndToken
 	ListItemStartToken
 	ListItemEndToken
-	TerminatorToken
 )
 
 type Token struct {
@@ -28,9 +23,3 @@ type Token struct {
 	Content        string
 	Attributes     map[string]string
 }
-
-// type TokenFormatter interface {
-// 	fmt.Stringer
-// 	Type() TokenType
-// 	Attr(string) (string, bool)
-// }
