@@ -22,7 +22,7 @@ var _ = Describe("lexer", func() {
 	JustBeforeEach(func() {
 		reader := strings.NewReader(inputHtml)
 		tokenizer = html.NewTokenizer(reader)
-		lexer = NewHtmlLexer(tokenizer)
+		lexer = NewLexer(tokenizer)
 	})
 
 	Describe("Run", func() {

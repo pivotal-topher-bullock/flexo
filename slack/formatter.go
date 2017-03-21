@@ -1,11 +1,14 @@
 package slack
 
 import (
-	"github.com/pivotal-topher-bullock/flexo"
 	"fmt"
+
+	"strings"
+
+	"github.com/pivotal-topher-bullock/flexo"
 )
 
-func NewSlackFormatter(config flexo.FormatterConfig) flexo.Formatter {
+func NewFormatter(config flexo.FormatterConfig) flexo.Formatter {
 	return &slackFormatter{
 		config: config,
 	}
@@ -24,23 +27,27 @@ func (sf *slackFormatter) Format(tokens <-chan flexo.Token) []string {
 }
 
 func (sf *slackFormatter) formatToken(token flexo.Token) string {
-	 switch token.Type {
-	 case flexo.TextToken:
-		return token.Content
-	 case flexo.LinkStartToken:
+	switch token.Type {
+	case flexo.TextToken:
+		if token.Content == "\n" {
+			return ""
+		}
+
+		return strings.Replace(token.Content, "**", "*", -1)
+	case flexo.LinkStartToken:
 		return fmt.Sprintf("<%s%s|", sf.config.LinkPrefix, token.Attributes["href"])
-	 case flexo.LinkEndToken:
+	case flexo.LinkEndToken:
 		return ">"
-	 case flexo.ListItemStartToken:
+	case flexo.ListItemStartToken:
 		return "- "
-	 case flexo.ListStartToken:
+	case flexo.ListStartToken:
 		fallthrough
-	 case flexo.ListEndToken:
+	case flexo.ListEndToken:
 		fallthrough
-	 case flexo.ListItemEndToken:
+	case flexo.ListItemEndToken:
 		return "\n"
-	 default:
+	default:
 		return ""
-	 }
+	}
 	return ""
 }

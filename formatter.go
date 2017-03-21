@@ -5,5 +5,5 @@ type Formatter interface {
 }
 
 type FormatterConfig struct {
-	LinkPrefix string
+	LinkPrefix string `long:"link-prefix" description:"Prefix for all links in the formatted output"`
 }

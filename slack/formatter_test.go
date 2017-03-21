@@ -15,14 +15,14 @@ var _ = Describe("Formatter", func() {
 	)
 
 	BeforeEach(func() {
-		formatter = NewSlackFormatter(config)
+		formatter = NewFormatter(config)
 	})
 
 	Describe("Run", func() {
 		var (
 			tokenChannel chan flexo.Token
-			tokens []flexo.Token
-			output []string
+			tokens       []flexo.Token
+			output       []string
 		)
 
 		JustBeforeEach(func() {
@@ -34,7 +34,6 @@ var _ = Describe("Formatter", func() {
 				close(tokenChannel)
 			}()
 
-
 			output = formatter.Format(tokenChannel)
 		})
 
@@ -42,12 +41,12 @@ var _ = Describe("Formatter", func() {
 			BeforeEach(func() {
 				tokens = []flexo.Token{
 					{
-						Type: flexo.LinkStartToken,
-						Attributes: map[string]string{ "href" : "example.com"},
+						Type:       flexo.LinkStartToken,
+						Attributes: map[string]string{"href": "example.com"},
 					},
 					{
-						Type: flexo.TextToken,
-						Content : "a slack link",
+						Type:    flexo.TextToken,
+						Content: "a slack link",
 					},
 					{
 						Type: flexo.LinkEndToken,
@@ -57,7 +56,7 @@ var _ = Describe("Formatter", func() {
 
 			It("builds the proper string for a slack message link", func() {
 				Expect(len(output)).To(Equal(3))
-				Expect(output).To(BeEquivalentTo([]string{"<example.com|","a slack link",">"}))
+				Expect(output).To(BeEquivalentTo([]string{"<example.com|", "a slack link", ">"}))
 			})
 		})
 
@@ -71,8 +70,8 @@ var _ = Describe("Formatter", func() {
 						Type: flexo.ListItemStartToken,
 					},
 					{
-						Type: flexo.TextToken,
-						Content : "one",
+						Type:    flexo.TextToken,
+						Content: "one",
 					},
 					{
 						Type: flexo.ListItemEndToken,
@@ -81,8 +80,8 @@ var _ = Describe("Formatter", func() {
 						Type: flexo.ListItemStartToken,
 					},
 					{
-						Type: flexo.TextToken,
-						Content : "two",
+						Type:    flexo.TextToken,
+						Content: "two",
 					},
 					{
 						Type: flexo.ListItemEndToken,
@@ -95,7 +94,7 @@ var _ = Describe("Formatter", func() {
 
 			It("builds the proper string for a slack message link", func() {
 				Expect(len(output)).To(Equal(8))
-				Expect(output).To(BeEquivalentTo([]string{"\n","- ","one","\n","- ","two","\n","\n"}))
+				Expect(output).To(BeEquivalentTo([]string{"\n", "- ", "one", "\n", "- ", "two", "\n", "\n"}))
 			})
 		})
 	})

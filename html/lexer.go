@@ -1,13 +1,22 @@
 package html
 
 import (
+	"bufio"
+	"os"
+
 	"github.com/pivotal-topher-bullock/flexo"
 	"golang.org/x/net/html"
 )
 
 const HtmlFormat string = "html"
 
-func NewHtmlLexer(tokenizer *html.Tokenizer) flexo.Lexer {
+func NewLexerFromStdin() flexo.Lexer {
+	stdin := bufio.NewReader(os.Stdin)
+	tokenizer := html.NewTokenizer(stdin)
+	return NewLexer(tokenizer)
+}
+
+func NewLexer(tokenizer *html.Tokenizer) flexo.Lexer {
 	return &htmlLexer{
 		tokenizer: tokenizer,
 	}
